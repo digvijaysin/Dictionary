@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/backimg"
+    tools:context="com.example.myapplication.imoxford.MiddleFragment">
+
+    <ImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/easylogo"
+        />
+
+    <Button
+        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="English To English"
+        android:id="@+id/button"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape"
+        android:textStyle="italic"
+        android:layout_below="@+id/imageView" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Antonyms"
+        android:textSize="20dp"
+        android:id="@+id/button2"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button2_shape"
+        android:textStyle="italic"
+        android:layout_below="@+id/button" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Synonyms"
+        android:textSize="20dp"
+        android:id="@+id/button3"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape"
+        android:textStyle="italic"
+        android:layout_below="@+id/button2" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play Games"
+        android:id="@+id/games"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:background="@drawable/button2_shape"
+        android:layout_below="@+id/button4"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        android:id="@+id/button4"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:background="@drawable/button_shape"
+        android:layout_below="@+id/button3"/>
+
+
+
+</LinearLayout>
