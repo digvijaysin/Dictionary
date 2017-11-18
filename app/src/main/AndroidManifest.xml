@@ -3,9 +3,9 @@
     package="com.example.myapplication.imoxford">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -32,9 +31,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".VoiceRecogniser">
-
-        </activity>
+        <activity android:name=".VoiceRecogniser" />
+        <activity android:name=".Synonyms"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Antonyms"></activity>
     </application>
 
 </manifest>

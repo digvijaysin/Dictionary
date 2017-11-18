@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 import static android.R.style.Animation;
 
 
-public class MainActivity extends AppCompatActivity implements Callback<FetchWordList>, View.OnClickListener, MiddleFragment.OnFragmentInteractionListener,Button1Fragment.OnFragmentInteractionListener,Button2Fragment.OnFragmentInteractionListener,Button3Fragment.OnFragmentInteractionListener,Button4Fragment.OnFragmentInteractionListener,GameFragment.OnFragmentInteractionListener,DefinitionsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Callback<FetchWordList>, View.OnClickListener, MiddleFragment.OnFragmentInteractionListener,Button1Fragment.OnFragmentInteractionListener,GameFragment.OnFragmentInteractionListener,DefinitionsFragment.OnFragmentInteractionListener {
 
     FrameLayout frameLayout;
     FragmentManager manager;
@@ -97,26 +97,19 @@ linearLayout=(LinearLayout)findViewById(R.id.loding_view);
          _visibleProgressBar();
 
 
-        }else if (view.getId() == R.id.button2) {
+        }else if (view.getId() == R.id.antonyms) {
 
-            Button2Fragment fragment1 = Button2Fragment.newInstance();
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment1);
-            fragmentTransaction.commit();
 
-        } else if (view.getId() == R.id.button3) {
 
-            Button3Fragment fragment1 = Button3Fragment.newInstance();
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment1);
-            fragmentTransaction.commit();
+        } else if (view.getId() == R.id.synonyms) {
+            Intent intent=new Intent(MainActivity.this,Synonyms.class);
+            startActivity(intent);
 
-        } else if (view.getId() == R.id.button4) {
 
-            Button4Fragment fragment1 = Button4Fragment.newInstance();
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment1);
-            fragmentTransaction.commit();
+
+        } else if (view.getId() == R.id.share) {
+
+
         }
         else if (view.getId() == R.id.games) {
 
@@ -157,10 +150,7 @@ linearLayout=(LinearLayout)findViewById(R.id.loding_view);
         }
         if(v.getId()==R.id.sharebutton)
         {
-            Button4Fragment fragment1 = Button4Fragment.newInstance();
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment1);
-            fragmentTransaction.commit();
+
         }
         if(v.getId()==R.id.exit)
         {
