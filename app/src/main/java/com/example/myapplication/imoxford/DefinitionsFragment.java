@@ -6,13 +6,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,16 +36,22 @@ import retrofit2.Response;
  * Use the {@link DefinitionsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DefinitionsFragment extends Fragment {
+public class DefinitionsFragment extends Fragment implements Callback<GetWordMeaning>{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+AlertDialog alertDialog;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
   static  List<String> list2=new ArrayList<>();
+static String WordName;
+    SearchView searchView;
+    TextView Word;
+    RecycleAdapter recycleAdapter;
+    TextView WordCategory;
+    static String wordCategory;
 
 
     private OnFragmentInteractionListener mListener;
@@ -50,18 +59,11 @@ public class DefinitionsFragment extends Fragment {
     public DefinitionsFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DefinitionsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DefinitionsFragment newInstance(List<String> list) {
+    public static DefinitionsFragment newInstance(List<String> list,String s,String WordCategory) {
         DefinitionsFragment fragment = new DefinitionsFragment();
+       WordName=s;
+        wordCategory=WordCategory;
+        list2.clear();
         list2=list;
         return fragment;
     }
@@ -79,10 +81,42 @@ public class DefinitionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_definitions, container, false);
+        AlertDialog.Builder alertDialogBuider=new AlertDialog.Builder(view.getContext());
+        alertDialogBuider.setView(R.layout.fore_ground_layout);
+        alertDialog=alertDialogBuider.create();
+        alertDialogBuider.setCancelable(false);
+Word=(TextView) view.findViewById(R.id.word_name);
+        WordCategory=(TextView)view.findViewById(R.id.word_category);
+        WordCategory.setText("( "+wordCategory+" )");
+        Word.setText(WordName);
+        ImageView imageView=(ImageView)view.findViewById(R.id.speak_word);
 
-        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.definition_recycler_view);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonPressed(Word.getText().toString());
+
+            }
+        });
+        searchView=(SearchView)view.findViewById(R.id.search_view1);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Word.setText(query.toUpperCase());
+                getWordMeaning(query);
+                alertDialog.show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        recycleAdapter=new RecycleAdapter();
+                RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.definition_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(new RecycleAdapter());
+        recyclerView.setAdapter(recycleAdapter);
         return view;
     }
 
@@ -143,7 +177,7 @@ public class DefinitionsFragment extends Fragment {
         public void onBindViewHolder(DefinitionsFragment.RecycleViewHolder holder, int position) {
 
 
-            holder.textView.append(""+(position+1)+":- "+list2.get(position));
+            holder.textView.setText(list2.get(position));
             holder.setText(holder.textView.getText().toString());
 
 
@@ -173,7 +207,50 @@ WordId=s;
         public void onClick(View v) {
 Toast.makeText(v.getContext(),WordId.substring(13),Toast.LENGTH_LONG).show();
 
-            onButtonPressed(WordId);
+            onButtonPressed(WordId.substring(13));
     }
 }
+    public  void getWordMeaning(String WordId) {
+        Call<GetWordMeaning> fetchWordListCall = RetrofitObject.getRetrofitObject().getWord("051aa347", "a4477df5e09ac56de5f14f8657c86bf2", WordId);
+        fetchWordListCall.enqueue(this);
+    }
+    @Override
+    public void onResponse(Call<GetWordMeaning> call, Response<GetWordMeaning> response) {
+        List<String> List=new ArrayList<>();
+
+
+        GetWordMeaning meaning=response.body();
+
+        for( GetWordMeaning.LexicalEntries lexicalEntries:meaning.lexiclaEntries)
+        {
+
+            WordCategory.setText("( "+  lexicalEntries.getWordType()+" )");
+            for(GetWordMeaning.Entries entries:lexicalEntries.entries)
+            {
+                for(GetWordMeaning.Sense sense:entries.sense)
+                {
+                    for(GetWordMeaning.Definitions definitions:sense.definitions)
+                    {
+                        for(String s:definitions.definitions)
+                        {
+                            List.add(s);
+                        }
+                    }
+                }
+            }
+        }
+        list2.clear();
+        list2=List;
+        recycleAdapter.notifyDataSetChanged();
+        alertDialog.dismiss();
+
+    }
+
+
+
+    @Override
+    public void onFailure(Call<GetWordMeaning> call, Throwable t) {
+
+    }
+
 }

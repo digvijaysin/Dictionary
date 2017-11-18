@@ -56,6 +56,15 @@
         android:textSize="20dp"
         android:background="@drawable/button2_shape"
         android:layout_below="@+id/button4"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grammer Test"
+        android:id="@+id/grammer"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:background="@drawable/button2_shape"
+        />
 
     <Button
         android:layout_width="match_parent"

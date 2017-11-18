@@ -21,7 +21,13 @@ public class GetWordMeaning {
                 @Expose
                 @SerializedName("lexicalEntries")
                List<Entries> entries;
+                @Expose
+                @SerializedName("lexicalCategory")
+                String WordType;
 
+                public String getWordType() {
+                    return WordType;
+                }
             }
     public class Entries
     {

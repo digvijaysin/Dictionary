@@ -1,44 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.myapplication.imoxford.Button2Fragment">
+    android:background="@color/bg_gradient_start"
+    tools:context="com.example.myapplication.imoxford.DefinitionsFragment">
 
-    <LinearLayout
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_view1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Search your words here"
-            android:gravity="center"
-            android:layout_weight="7"
-            android:textStyle="bold"
-            android:paddingBottom="20dp"
-            android:background="@drawable/edittext_shape"
-            android:textSize="20dp"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/edittext_shape"
-            android:src="@drawable/mic"/>
-    </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
+        android:background="@color/colorPrimary"></android.support.v7.widget.SearchView>
+    <RelativeLayout
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerview"
-        android:background="@drawable/shape">
-    </android.support.v7.widget.RecyclerView>
-
-
-
-
+        android:background="@color/bg_gradient_end"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/word_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:text="Dummy Word"
+                android:textColor="@color/colorPrimary"
+                />
+            <TextView
+                android:id="@+id/word_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:text="Category"/>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/speak_word"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_record_voice_over_black_24dp"
+            />
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/definition_recycler_view"
+        android:layout_width="match_parent"
+        android:background="@color/bg_gradient_start"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

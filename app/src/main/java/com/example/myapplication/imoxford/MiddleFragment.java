@@ -32,6 +32,7 @@ public class MiddleFragment extends Fragment implements View.OnClickListener {
     Button synonyms;
     Button share;
     Button game;
+    Button grammerTest;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,7 +75,8 @@ public class MiddleFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view=inflater.inflate(R.layout.fragment_fragment1, container, false);
-
+grammerTest=(Button)view.findViewById(R.id.grammer);
+        grammerTest.setOnClickListener(this);
         englishtohindi=(Button)view.findViewById(R.id.button);
         englishtohindi.setOnClickListener(this);
         hinditoenglish=(Button)view.findViewById(R.id.button2);
@@ -117,30 +119,7 @@ public class MiddleFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        v.startAnimation(animation);
-        if(v.getId()==R.id.button)
-        {
-         hinditoenglish.startAnimation(animation1);
-         synonyms.startAnimation(animation1);
-         share.startAnimation(animation1);
-         game.startAnimation(animation1);
-        }
-        if(v.getId()==R.id.button2)
-        {
-
-        }
-        if(v.getId()==R.id.button3)
-        {
-
-        }
-        if(v.getId()==R.id.button4)
-        {
-
-        }
-        if(v.getId()==R.id.games)
-        {
-
-        }
+        v.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         onButtonPressed(v);
     }

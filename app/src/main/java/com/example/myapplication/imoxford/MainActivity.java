@@ -1,5 +1,6 @@
 package com.example.myapplication.imoxford;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,9 +39,10 @@ public class MainActivity extends AppCompatActivity implements Callback<FetchWor
     ImageButton Exit;
     static int flag=0;
     TextToSpeech speech;
-
+AlertDialog alertDialog;
     List<WordList> list2=new ArrayList<>();
-
+LinearLayout linearLayout;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements Callback<FetchWor
         Share=(ImageButton)findViewById(R.id.sharebutton);
         Exit=(ImageButton)findViewById(R.id.exit);
         Home.setOnClickListener(this);
-
+linearLayout=(LinearLayout)findViewById(R.id.loding_view);
+        relativeLayout=(RelativeLayout)findViewById(R.id.detail_view);
         search.setOnClickListener(this);
         Share.setOnClickListener(this);
         Exit.setOnClickListener(this);
@@ -70,13 +75,26 @@ public class MainActivity extends AppCompatActivity implements Callback<FetchWor
 
 
     }
+    public void _visibleProgressBar()
+    {
+        linearLayout.setVisibility(View.VISIBLE);
+        relativeLayout.setVisibility(View.GONE);
+    }
+    public void _hideProgressBar()
+    {
+        linearLayout.setVisibility(View.GONE);
+        relativeLayout.setVisibility(View.VISIBLE);
+
+    }
 
     @Override
     public void onFragmentInteraction(View view) {
 
         if (view.getId() == R.id.button) {
+
             Call<FetchWordList> fetchWordListCall= RetrofitObject.getRetrofitObject().getList("051aa347","a4477df5e09ac56de5f14f8657c86bf2");
             fetchWordListCall.enqueue(this);
+         _visibleProgressBar();
 
 
         }else if (view.getId() == R.id.button2) {
@@ -107,6 +125,12 @@ public class MainActivity extends AppCompatActivity implements Callback<FetchWor
             fragmentTransaction.replace(R.id.frame, fragment1);
             fragmentTransaction.commit();
         }
+        else if(view.getId()==R.id.grammer)
+        {
+            Intent intent=new Intent(MainActivity.this,VoiceRecogniser.class);
+            startActivity(intent);
+
+        }
     }
 
 
@@ -129,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements Callback<FetchWor
         {
             Call<FetchWordList> fetchWordListCall= RetrofitObject.getRetrofitObject().getList("051aa347","a4477df5e09ac56de5f14f8657c86bf2");
             fetchWordListCall.enqueue(this);
+            _visibleProgressBar();
         }
         if(v.getId()==R.id.sharebutton)
         {
@@ -154,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements Callback<FetchWor
 
     @Override
     public void onResponse(Call<FetchWordList> call, Response<FetchWordList> response) {
+
 FetchWordList list=response.body();
 for(WordList list1:list.wordLists)
 {
@@ -163,6 +189,7 @@ list2.add(list1);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment1);
         fragmentTransaction.commit();
+        _hideProgressBar();
 
 
 
@@ -174,8 +201,8 @@ list2.add(list1);
     }
 
     @Override
-    public void onFragmentInteraction(List<String> s) {
-        DefinitionsFragment fragment1 = DefinitionsFragment.newInstance(s);
+    public void onFragmentInteraction(List<String> s,String WordName,String WordCategory) {
+        DefinitionsFragment fragment1 = DefinitionsFragment.newInstance(s,WordName,WordCategory);
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment1);
         fragmentTransaction.commit();
@@ -185,7 +212,7 @@ list2.add(list1);
     @Override
     public void onFragmentInteraction(String s) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            speech.speak(s.substring(11),TextToSpeech.QUEUE_FLUSH,null,null);
+            speech.speak(s,TextToSpeech.QUEUE_FLUSH,null,null);
 
 
         }

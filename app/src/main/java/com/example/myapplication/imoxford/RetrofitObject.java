@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitObject {
     static final String BASE_URL="https://od-api.oxforddictionaries.com/api/v1/";
+    static final String BASE_URL1="https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyByQmYntxyEVKIRKjbeWRaWkAr3BvhfMag";
     public static RetrofitInterface getRetrofitObject()
     {
         Retrofit retrofit = new Retrofit.Builder()

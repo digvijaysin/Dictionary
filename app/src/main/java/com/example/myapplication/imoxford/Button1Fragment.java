@@ -5,14 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,18 +33,22 @@ import retrofit2.Response;
  * Use the {@link Button1Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Button1Fragment extends Fragment {
+public class Button1Fragment extends Fragment implements Callback<GetWordMeaning>{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+AlertDialog alertDialog;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 static List<WordList> list2=new ArrayList<>();
+static List<WordList> wordList=new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+SearchView searchView;
+    RecycleAdapter adapter;
     private OnFragmentInteractionListener mListener;
-
+public String WordName;
+    public String WordCategory;
     public Button1Fragment() {
         // Required empty public constructor
     }
@@ -59,6 +66,7 @@ static List<WordList> list2=new ArrayList<>();
         Button1Fragment fragment = new Button1Fragment();
        // args.putString(ARG_PARAM1, param1);
        // args.putString(ARG_PARAM2, param2);
+wordList=list;
         list2=list;
         return fragment;
     }
@@ -76,16 +84,48 @@ static List<WordList> list2=new ArrayList<>();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.activity_button1, container, false);
+        AlertDialog.Builder alertDialogBuider=new AlertDialog.Builder(v.getContext());
+        alertDialogBuider.setView(R.layout.fore_ground_layout);
+        alertDialog=alertDialogBuider.create();
+        alertDialogBuider.setCancelable(false);
+        searchView=(SearchView)v.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                WordName=query;
+                getWordMeaning(query);
+alertDialog.show();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText=newText.toLowerCase();
+                List<WordList> newList=new ArrayList<>();
+                for(WordList blogDetailsModalClass:wordList)
+                {
+                    if(blogDetailsModalClass.getWord().toLowerCase().contains(newText)) {
+                        newList.add(blogDetailsModalClass);
+
+                    }
+                }
+                adapter.SetFilter(newList);
+
+
+                return false;
+            }
+        });
+        adapter=new RecycleAdapter(list2);
         RecyclerView recyclerView=(RecyclerView)v.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        recyclerView.setAdapter(new RecycleAdapter());
+        recyclerView.setAdapter(adapter);
         return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(List<String> s) {
+    public void onButtonPressed(List<String> s,String WordName,String WordCategory) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(s);
+            mListener.onFragmentInteraction(s,WordName,WordCategory);
         }
     }
 
@@ -118,16 +158,18 @@ static List<WordList> list2=new ArrayList<>();
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(List<String> s);
+        void onFragmentInteraction(List<String> s,String WordName,String WordCategory);
     }
     public class  RecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder>
     {
+        public RecycleAdapter(List<WordList> list)
+        {
+            list2=list;
+        }
         Animation animation;
         @Override
         public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context=parent.getContext();
-             animation= AnimationUtils.loadAnimation(context,
-                    R.anim.move);
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.recler_view,parent,false);
             return new RecycleViewHolder(view);
@@ -139,7 +181,6 @@ static List<WordList> list2=new ArrayList<>();
 
             holder.textView.setText(list2.get(position).getWord());
             holder.wordId(list2.get(position).getWordId());
-            holder.textView.startAnimation(animation);
 
         }
 
@@ -147,8 +188,14 @@ static List<WordList> list2=new ArrayList<>();
         public int getItemCount() {
             return list2.size();
         }
+        public void SetFilter(List<WordList> list)
+        {
+            list2=new ArrayList<>();
+            list2.addAll(list);
+            notifyDataSetChanged();
+        }
     }
-    public class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, Callback<GetWordMeaning>
+    public class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         String WordId="";
 TextView textView;
@@ -164,41 +211,53 @@ TextView textView;
 
         @Override
         public void onClick(View v) {
-            Call<GetWordMeaning> fetchWordListCall= RetrofitObject.getRetrofitObject().getWord("051aa347","a4477df5e09ac56de5f14f8657c86bf2",WordId);
-            fetchWordListCall.enqueue(this);
-
-        }
-
-        @Override
-        public void onResponse(Call<GetWordMeaning> call, Response<GetWordMeaning> response) {
-List<String> List=new ArrayList<>();
-            GetWordMeaning meaning=response.body();
-         for( GetWordMeaning.LexicalEntries lexicalEntries:meaning.lexiclaEntries)
-         {
-             for(GetWordMeaning.Entries entries:lexicalEntries.entries)
-             {
-                 for(GetWordMeaning.Sense sense:entries.sense)
-                 {
-                     for(GetWordMeaning.Definitions definitions:sense.definitions)
-                     {
-                         for(String s:definitions.definitions)
-                         {
-                             List.add(s);
-                         }
-                     }
-                 }
-             }
-         }
-
-            onButtonPressed(List);
+            WordName=WordId.toUpperCase();
+            getWordMeaning(WordId);
+            alertDialog.show();
 
         }
 
 
+    }
 
-        @Override
-        public void onFailure(Call<GetWordMeaning> call, Throwable t) {
+    public  void getWordMeaning(String WordId) {
+        Call<GetWordMeaning> fetchWordListCall = RetrofitObject.getRetrofitObject().getWord("051aa347", "a4477df5e09ac56de5f14f8657c86bf2", WordId);
+        fetchWordListCall.enqueue(this);
+    }
+    @Override
+    public void onResponse(Call<GetWordMeaning> call, Response<GetWordMeaning> response) {
+        if (response.code() == 200) {
+            List<String> List = new ArrayList<>();
 
+            GetWordMeaning meaning = response.body();
+
+            for (GetWordMeaning.LexicalEntries lexicalEntries : meaning.lexiclaEntries) {
+               WordCategory= lexicalEntries.getWordType();
+                for (GetWordMeaning.Entries entries : lexicalEntries.entries) {
+                    for (GetWordMeaning.Sense sense : entries.sense) {
+                        for (GetWordMeaning.Definitions definitions : sense.definitions) {
+                            for (String s : definitions.definitions) {
+                                List.add(s);
+                            }
+                        }
+                    }
+                }
+            }
+            alertDialog.dismiss();
+            onButtonPressed(List, WordName,WordCategory);
+
+        }
+        else if(response.code()==404)
+        {
+            Toast.makeText(getContext(),"Word Not Found!",Toast.LENGTH_LONG).show();
+            alertDialog.dismiss();
         }
     }
-}
+
+
+    @Override
+    public void onFailure(Call<GetWordMeaning> call, Throwable t) {
+
+    }
+
+    }
