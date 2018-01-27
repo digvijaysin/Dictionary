@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,12 +30,16 @@ import retrofit2.Retrofit;
 import static android.R.style.Animation;
 
 
-public class MainActivity extends AppCompatActivity implements Callback<FetchWordList>, View.OnClickListener, MiddleFragment.OnFragmentInteractionListener,Button1Fragment.OnFragmentInteractionListener,GameFragment.OnFragmentInteractionListener,DefinitionsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    FrameLayout frameLayout;
     FragmentManager manager;
     ImageButton Home;
     ImageButton search;
+    Button WordMeaning;
+    Button Grammer;
+    Button PlayGames;
+    Button ShareIt;
+
     ImageButton Share;
     ImageButton Exit;
     static int flag=0;
@@ -52,8 +57,6 @@ LinearLayout linearLayout;
         Share=(ImageButton)findViewById(R.id.sharebutton);
         Exit=(ImageButton)findViewById(R.id.exit);
         Home.setOnClickListener(this);
-linearLayout=(LinearLayout)findViewById(R.id.loding_view);
-        relativeLayout=(RelativeLayout)findViewById(R.id.detail_view);
         search.setOnClickListener(this);
         Share.setOnClickListener(this);
         Exit.setOnClickListener(this);
@@ -66,87 +69,50 @@ linearLayout=(LinearLayout)findViewById(R.id.loding_view);
             }
         });
 
+WordMeaning=(Button)findViewById(R.id.search_word);
+        WordMeaning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent);
 
-    manager = getSupportFragmentManager();
-        MiddleFragment middleFragment = MiddleFragment.newInstance();
-        FragmentTransaction fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.add(R.id.frame, middleFragment);
-        fragmentTransaction.commit();
+            }
+        });
+        Grammer=(Button)findViewById(R.id.grammer);
+        Grammer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,VoiceRecogniser.class);
+                startActivity(intent);
 
+            }
+        });
+        PlayGames=(Button)findViewById(R.id.games);
+        PlayGames.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-    }
-    public void _visibleProgressBar()
-    {
-        linearLayout.setVisibility(View.VISIBLE);
-        relativeLayout.setVisibility(View.GONE);
-    }
-    public void _hideProgressBar()
-    {
-        linearLayout.setVisibility(View.GONE);
-        relativeLayout.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    public void onFragmentInteraction(View view) {
-
-        if (view.getId() == R.id.button) {
-
-            Call<FetchWordList> fetchWordListCall= RetrofitObject.getRetrofitObject().getList("051aa347","a4477df5e09ac56de5f14f8657c86bf2");
-            fetchWordListCall.enqueue(this);
-         _visibleProgressBar();
-
-
-        }else if (view.getId() == R.id.antonyms) {
+            }
+        });
+        ShareIt=(Button)findViewById(R.id.share);
 
 
 
-        } else if (view.getId() == R.id.synonyms) {
-            Intent intent=new Intent(MainActivity.this,Synonyms.class);
-            startActivity(intent);
-
-
-
-        } else if (view.getId() == R.id.share) {
-
-
-        }
-        else if (view.getId() == R.id.games) {
-
-            GameFragment fragment1 = GameFragment.newInstance();
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment1);
-            fragmentTransaction.commit();
-        }
-        else if(view.getId()==R.id.grammer)
-        {
-            Intent intent=new Intent(MainActivity.this,VoiceRecogniser.class);
-            startActivity(intent);
-
-        }
-    }
-
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.homebutton)
         {
-            MiddleFragment middleFragment = MiddleFragment.newInstance();
-            FragmentTransaction fragmentTransaction = manager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame, middleFragment);
-            fragmentTransaction.commit();
 
         }
         if(v.getId()==R.id.searchbutton)
         {
-            Call<FetchWordList> fetchWordListCall= RetrofitObject.getRetrofitObject().getList("051aa347","a4477df5e09ac56de5f14f8657c86bf2");
-            fetchWordListCall.enqueue(this);
-            _visibleProgressBar();
+            Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+            startActivity(intent);
         }
         if(v.getId()==R.id.sharebutton)
         {
@@ -165,46 +131,5 @@ linearLayout=(LinearLayout)findViewById(R.id.loding_view);
             }
         }
 
-    }
-
-    @Override
-    public void onResponse(Call<FetchWordList> call, Response<FetchWordList> response) {
-
-FetchWordList list=response.body();
-for(WordList list1:list.wordLists)
-{
-list2.add(list1);
-}
-        Button1Fragment fragment1 = Button1Fragment.newInstance(list2);
-        FragmentTransaction fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame, fragment1);
-        fragmentTransaction.commit();
-        _hideProgressBar();
-
-
-
-    }
-
-    @Override
-    public void onFailure(Call<FetchWordList> call, Throwable t) {
-
-    }
-
-    @Override
-    public void onFragmentInteraction(List<String> s,String WordName,String WordCategory) {
-        DefinitionsFragment fragment1 = DefinitionsFragment.newInstance(s,WordName,WordCategory);
-        FragmentTransaction fragmentTransaction = manager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame, fragment1);
-        fragmentTransaction.commit();
-
-    }
-
-    @Override
-    public void onFragmentInteraction(String s) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            speech.speak(s,TextToSpeech.QUEUE_FLUSH,null,null);
-
-
-        }
     }
 }

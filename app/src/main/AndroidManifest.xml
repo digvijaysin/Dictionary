@@ -32,9 +32,11 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".VoiceRecogniser" />
-        <activity android:name=".Synonyms"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".Antonyms"></activity>
+        <activity
+            android:name=".Synonyms"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".Antonyms" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>
