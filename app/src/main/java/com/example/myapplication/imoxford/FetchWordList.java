@@ -13,5 +13,4 @@ public class FetchWordList {
     @Expose
     @SerializedName("results")
     public List<WordList> wordLists;
-
 }

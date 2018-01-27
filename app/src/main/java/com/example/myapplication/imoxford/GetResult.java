@@ -12,7 +12,7 @@ import java.util.List;
 
 class GetResult {
 @Expose
-    @SerializedName("alternatives")
+@SerializedName("alternatives")
 List<GetText> getText= new ArrayList<>();
 
         public class GetText{

@@ -4,14 +4,18 @@ import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.myapplication.imoxford.FriendClasses.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +29,8 @@ public class SearchActivity extends AppCompatActivity {
     AlertDialog alertDialog;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    static List<WordList> list2=new ArrayList<>();
-    static List<WordList> wordList=new ArrayList<>();
+    static ArrayList<String> list2=new ArrayList<>();
+    static ArrayList<String> wordList=new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -43,6 +47,11 @@ public class SearchActivity extends AppCompatActivity {
         alertDialog=alertDialogBuider.create();
         alertDialogBuider.setCancelable(false);
         searchView=(SearchView)findViewById(R.id.search_view);
+        adapter=new RecycleAdapter(wordList);
+        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -53,12 +62,14 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                newText=newText.toLowerCase();
-                List<WordList> newList=new ArrayList<>();
-                for(WordList blogDetailsModalClass:wordList)
+                newText=Constants.toTitleCase(newText);
+                ArrayList<String> newList=new ArrayList<>();
+                for(String blogDetailsModalClass:Constants.keyList)
                 {
-                    if(blogDetailsModalClass.getWord().toLowerCase().contains(newText)) {
+                    if(blogDetailsModalClass.contains(newText)) {
+                        Log.d("harshit","word found");
                         newList.add(blogDetailsModalClass);
+
 
                     }
                 }
@@ -68,11 +79,11 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-        adapter=new RecycleAdapter(list2);
+        adapter=new RecycleAdapter(Constants.keyList);
     }
     public class  RecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder>
     {
-        public RecycleAdapter(List<WordList> list)
+        public RecycleAdapter(ArrayList<String> list)
         {
             list2=list;
         }
@@ -89,8 +100,8 @@ public class SearchActivity extends AppCompatActivity {
         public void onBindViewHolder(RecycleViewHolder holder, int position) {
 
 
-            holder.textView.setText(list2.get(position).getWord());
-            holder.wordId(list2.get(position).getWordId());
+            holder.textView.setText(list2.get(position));
+            //holder.wordId(list2.get(position).getWordId());
 
         }
 
@@ -98,7 +109,7 @@ public class SearchActivity extends AppCompatActivity {
         public int getItemCount() {
             return list2.size();
         }
-        public void SetFilter(List<WordList> list)
+        public void SetFilter(ArrayList<String> list)
         {
             list2=new ArrayList<>();
             list2.addAll(list);
