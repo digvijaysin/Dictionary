@@ -12,28 +12,15 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        InitiateAllWords initiateAllWords=new InitiateAllWords(this);
-        Thread th = new Thread() {
-            @Override
-            public void run() {
-                try {
-
-                    sleep(2000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    Intent in = new Intent(MainActivity2.this, MainActivity.class);
-                    startActivity(in);
-                }
-            }
-        };
-        th.start();
+        Intent in = new Intent(MainActivity2.this, MainActivity.class);
+        startActivity(in);
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        InitiateAllWords initiateAllWords=new InitiateAllWords(this);
         finish();
     }
 }

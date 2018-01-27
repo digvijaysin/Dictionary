@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.imoxford.FriendClasses.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class DefinitionActivity extends AppCompatActivity {
     private String mParam1;
     private String mParam2;
     static List<String> list2=new ArrayList<>();
-  private   static String WordName;
+    private static String wordName;
     SearchView searchView;
     TextView Word;
     RecycleAdapter recycleAdapter;
@@ -49,6 +51,7 @@ public class DefinitionActivity extends AppCompatActivity {
         WordCategory=(TextView)findViewById(R.id.word_category);
 
         ImageView imageView=(ImageView)findViewById(R.id.speak_word);
+        Word.setText(wordName);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,15 +84,31 @@ public class DefinitionActivity extends AppCompatActivity {
     public static Intent getDefinitionActivityIntent(Context c,String WordKey)
     {
         Intent intent=new Intent(c,DefinitionActivity.class);
-        WordName=WordKey;
+        wordName=WordKey;
         list2.clear();
         setWordDefinition();
-
-return intent;
+        return intent;
     }
-    public static  void setWordDefinition()
-    {
-        
+    public static  void setWordDefinition() {
+        String s= Constants.hashMap.get(wordName);
+        int index=3;
+        String tempStr="";
+        int len=s.length();
+        for(int i=3;i<len-2;i++){
+            if(i+4<len && (s.substring(i,i+4)).equals("', '")){
+                list2.add(tempStr);
+                Log.d("Harshit",tempStr);
+                tempStr="";
+                i+=4;
+            }
+            else{
+                tempStr+=s.charAt(i);
+            }
+        }
+        if(!tempStr.equals("")){
+            list2.add(tempStr);
+            Log.d("Harshit",tempStr);
+        }
     }
     public class  RecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder>
     {
