@@ -1,6 +1,7 @@
 package com.example.myapplication.imoxford;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-        adapter=new RecycleAdapter(Constants.keyList);
+       // adapter=new RecycleAdapter(Constants.keyList);
     }
     public class  RecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder>
     {
@@ -101,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
             holder.textView.setText(list2.get(position));
-            //holder.wordId(list2.get(position).getWordId());
+            holder.wordId(list2.get(position));
 
         }
 
@@ -141,6 +142,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public  void getWordMeaning(String WordId) {
+        Intent intent=DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(),WordId);
+        startActivity(intent);
 
     }
 

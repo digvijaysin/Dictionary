@@ -64,6 +64,7 @@ public class InitiateAllWords {
                     hashMap.put(word, s.substring(i + 1,len-1));
                 }
                 Constants.hashMap=hashMap;
+                    Log.d("Harshit",hashMap.get("Back (A.)"));
             } catch (IOException e) {
                 Log.d("Harshit",e.toString());
             }

@@ -36,7 +36,8 @@
             android:name=".Synonyms"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".Antonyms" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".DefinitionActivity"></activity>
     </application>
 
 </manifest>
