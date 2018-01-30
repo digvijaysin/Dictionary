@@ -65,17 +65,31 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 newText=Constants.toTitleCase(newText);
                 ArrayList<String> newList=new ArrayList<>();
-                for(String blogDetailsModalClass:Constants.keyList)
-                {
-                    if(blogDetailsModalClass.contains(newText)) {
-                        Log.d("harshit","word found");
-                        newList.add(blogDetailsModalClass);
-
-
+                Log.d("Harshit","Before Binary Search");
+                int startIndex=Constants.binarySearch(newText);
+                Log.d("Harshit","After Binary Search");
+                if(startIndex!=-1){
+                    char alphabet=newText.charAt(0);
+                    alphabet+=1;
+                    int keyListSize=Constants.keyList.size();
+                    Log.d("Harshit","start index not 1");
+                    for(int i=startIndex;Constants.keyList.get(i).charAt(0)!=alphabet && i<keyListSize;i++){
+                        newList.add(Constants.keyList.get(i));
                     }
-                }
-                adapter.SetFilter(newList);
+//                for(String blogDetailsModalClass:Constants.keyList)
+//                {
+//                    if(blogDetailsModalClass.contains(newText)) {
+//                        Log.d("harshit","word found");
+//                        newList.add(blogDetailsModalClass);
+//
+//
+//                    }
+//                }
 
+                    adapter.SetFilter(newList);
+
+
+                }
 
                 return false;
             }

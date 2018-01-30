@@ -27,17 +27,17 @@ public class InitiateAllWords {
     public Context context;
     public InitiateAllWords(Context context){
         this.context=context;
-        initiateKeys();
+       // initiateKeys();
         initiateWordDefinitions();
     }
-    public void initiateKeys(){
+    /*public void initiateKeys(){
         AssetManager am = context.getAssets();
         try {
             InputStream is = am.open("words.txt");
             Scanner sc = new Scanner(is);
             int t = sc.nextInt();
             sc.nextLine();
-            ArrayList<String> keyList=new ArrayList<String>();
+
             while (t-- != 0) {
                 keyList.add(sc.nextLine());
             }
@@ -45,26 +45,27 @@ public class InitiateAllWords {
         }catch(Exception e){
             Log.d("Harshit",e.toString());
         }
-    }
+    }*/
     public void initiateWordDefinitions(){
         AssetManager am = context.getAssets();
                 try {
                     InputStream is = am.open("wordMeanings1.txt");
-                    Scanner sc=new Scanner(is);
+                    BufferedReader br=new BufferedReader(new InputStreamReader(is));
+                    ArrayList<String> keyList=new ArrayList<String>();
                     HashMap<String,String> hashMap=new HashMap<String,String>();
-                    int t=sc.nextInt();
-                    sc.nextLine();
+                    int t=Integer.parseInt(br.readLine());
                     while(t--!=0) {
-                    String s = sc.nextLine();
-                    int len = s.length(), i;
-                    String word = "";
-                    for (i = 0; s.charAt(i) != '@'; i++) {
-                        word += s.charAt(i);
-                    }
-                    hashMap.put(word, s.substring(i + 1,len-1));
+                        String s = br.readLine();
+                        int len = s.length(), i;
+                        String word = "";
+                        for (i = 0; s.charAt(i) != '@'; i++) {
+                            word += s.charAt(i);
+                        }
+                        keyList.add(word);
+                        hashMap.put(word, s.substring(i + 1,len-1));
                 }
-                Constants.hashMap=hashMap;
-                    Log.d("Harshit",hashMap.get("Back (A.)"));
+                    Constants.hashMap=hashMap;
+                    Constants.keyList=keyList;
             } catch (IOException e) {
                 Log.d("Harshit",e.toString());
             }
