@@ -73,22 +73,10 @@ public class SearchActivity extends AppCompatActivity {
                     alphabet+=1;
                     int keyListSize=Constants.keyList.size();
                     Log.d("Harshit","start index not 1");
-                    for(int i=startIndex;Constants.keyList.get(i).charAt(0)!=alphabet && i<keyListSize;i++){
+                    for(int i=startIndex; i<keyListSize && Constants.keyList.get(i).charAt(0)!=alphabet;i++) {
                         newList.add(Constants.keyList.get(i));
                     }
-//                for(String blogDetailsModalClass:Constants.keyList)
-//                {
-//                    if(blogDetailsModalClass.contains(newText)) {
-//                        Log.d("harshit","word found");
-//                        newList.add(blogDetailsModalClass);
-//
-//
-//                    }
-//                }
-
                     adapter.SetFilter(newList);
-
-
                 }
 
                 return false;
