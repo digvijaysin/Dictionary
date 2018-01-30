@@ -31,6 +31,7 @@ public class Constants {
     public static int binarySearch(String x) {
         if(x=="")
             return -1;
+        x+=" ";
         ArrayList<String> a=keyList;
         int low = 0;
         int high = a.size() - 1;
@@ -48,9 +49,6 @@ public class Constants {
             } else if (compareValue > 0) {
                 high = mid - 1;
             } else {
-//                while(compareValue==0 && ){
-//                    mid--;
-//                }
                 return mid;
             }
         }
