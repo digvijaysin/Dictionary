@@ -11,6 +11,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        InitiateAllWords initiateAllWords=new InitiateAllWords(this);
         Intent in = new Intent(MainActivity2.this, MainActivity.class);
         startActivity(in);
 
@@ -19,7 +20,6 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        InitiateAllWords initiateAllWords=new InitiateAllWords(this);
         finish();
     }
 }

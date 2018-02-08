@@ -64,6 +64,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+<<<<<<< HEAD
                 newText = Constants.toTitleCase(newText);
                 ArrayList<String> newList = new ArrayList<>();
                 for (String blogDetailsModalClass : Constants.keyList) {
@@ -72,14 +73,32 @@ public class SearchActivity extends AppCompatActivity {
                         newList.add(blogDetailsModalClass);
 
 
+=======
+                newText=Constants.toTitleCase(newText);
+                ArrayList<String> newList=new ArrayList<>();
+                Log.d("Harshit","Before Binary Search");
+                int startIndex=Constants.binarySearch(newText);
+                Log.d("Harshit","After Binary Search");
+                if(startIndex!=-1){
+                    char alphabet=newText.charAt(0);
+                    alphabet+=1;
+                    int keyListSize=Constants.keyList.size();
+                    Log.d("Harshit","start index not 1");
+                    for(int i=startIndex; i<keyListSize && Constants.keyList.get(i).charAt(0)!=alphabet;i++) {
+                        newList.add(Constants.keyList.get(i));
+>>>>>>> 84a9bab23319e5b7615d4c8635407a687bf71c70
                     }
+                    adapter.SetFilter(newList);
                 }
+<<<<<<< HEAD
                 if (newList.isEmpty()) {
                     newList.add("Word Not in List Click to Search online");
                     SearchWord = newText;
                 }
                 adapter.SetFilter(newList);
 
+=======
+>>>>>>> 84a9bab23319e5b7615d4c8635407a687bf71c70
 
                 return false;
             }

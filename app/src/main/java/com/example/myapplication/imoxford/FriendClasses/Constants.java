@@ -28,4 +28,34 @@ public class Constants {
 
         return titleCase.toString();
     }
+    public static int binarySearch(String x) {
+        if(x=="")
+            return -1;
+        ArrayList<String> a=keyList;
+        int low = 0;
+        int high = a.size() - 1;
+        int mid;
+        int lenIndex=x.length();
+        while (low <= high) {
+            mid = (low + high) / 2;
+            int compareValue;
+            if(lenIndex+1<=a.get(mid).length())
+                compareValue=(a.get(mid).substring(0,lenIndex)).compareTo(x);
+            else
+                compareValue=(a.get(mid)).compareTo(x);
+            if (compareValue < 0) {
+                low = mid + 1;
+            } else if (compareValue > 0) {
+                high = mid - 1;
+            } else {
+                int bin=binarySearch(x+" ");
+                if(bin==-1)
+                    return mid;
+                else
+                    return bin;
+            }
+        }
+
+        return -1;
+    }
 }
