@@ -30,49 +30,53 @@ public class SearchActivity extends AppCompatActivity {
     AlertDialog alertDialog;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    static ArrayList<String> list2=new ArrayList<>();
-    static ArrayList<String> wordList=new ArrayList<>();
+    static ArrayList<String> list2 = new ArrayList<>();
+    static ArrayList<String> wordList = new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     SearchView searchView;
     RecycleAdapter adapter;
+    public String SearchWord;
     public String WordName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        AlertDialog.Builder alertDialogBuider=new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuider = new AlertDialog.Builder(this);
         alertDialogBuider.setView(R.layout.fore_ground_layout);
-        alertDialog=alertDialogBuider.create();
+        alertDialog = alertDialogBuider.create();
         alertDialogBuider.setCancelable(false);
-        searchView=(SearchView)findViewById(R.id.search_view);
-        adapter=new RecycleAdapter(wordList);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
+        searchView = (SearchView) findViewById(R.id.search_view);
+        adapter = new RecycleAdapter(wordList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getWordMeaning(query);
-                alertDialog.show();
+                //getWordMeaning(query);
+                //alertDialog.show();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                newText=Constants.toTitleCase(newText);
-                ArrayList<String> newList=new ArrayList<>();
-                for(String blogDetailsModalClass:Constants.keyList)
-                {
-                    if(blogDetailsModalClass.contains(newText)) {
-                        Log.d("harshit","word found");
+                newText = Constants.toTitleCase(newText);
+                ArrayList<String> newList = new ArrayList<>();
+                for (String blogDetailsModalClass : Constants.keyList) {
+                    if (blogDetailsModalClass.contains(newText)) {
+                        Log.d("harshit", "word found");
                         newList.add(blogDetailsModalClass);
 
 
                     }
+                }
+                if (newList.isEmpty()) {
+                    newList.add("Word Not in List Click to Search online");
+                    SearchWord = newText;
                 }
                 adapter.SetFilter(newList);
 
@@ -80,20 +84,21 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-       // adapter=new RecycleAdapter(Constants.keyList);
+        // adapter=new RecycleAdapter(Constants.keyList);
     }
-    public class  RecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder>
-    {
-        public RecycleAdapter(ArrayList<String> list)
-        {
-            list2=list;
+
+    public class RecycleAdapter extends RecyclerView.Adapter<RecycleViewHolder> {
+        public RecycleAdapter(ArrayList<String> list) {
+            list2 = list;
         }
+
         Animation animation;
+
         @Override
         public RecycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context context=parent.getContext();
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.recler_view,parent,false);
+            Context context = parent.getContext();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.recler_view, parent, false);
             return new RecycleViewHolder(view);
         }
 
@@ -110,43 +115,49 @@ public class SearchActivity extends AppCompatActivity {
         public int getItemCount() {
             return list2.size();
         }
-        public void SetFilter(ArrayList<String> list)
-        {
-            list2=new ArrayList<>();
+
+        public void SetFilter(ArrayList<String> list) {
+            list2 = new ArrayList<>();
             list2.addAll(list);
             notifyDataSetChanged();
         }
     }
-    public class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
-        String WordId="";
+
+    public class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        String WordId = "";
         TextView textView;
+
         public RecycleViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView)itemView.findViewById(R.id.text);
+            textView = (TextView) itemView.findViewById(R.id.text);
             textView.setOnClickListener(this);
         }
-        public void wordId(String s)
-        {
-            WordId=s;
+
+        public void wordId(String s) {
+            WordId = s;
         }
 
         @Override
         public void onClick(View v) {
-            WordName=WordId.toUpperCase();
+            WordName = WordId.toUpperCase();
             getWordMeaning(WordId);
-            alertDialog.show();
+            //alertDialog.show();
         }
 
 
     }
 
-    public  void getWordMeaning(String WordId) {
-        Intent intent=DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(),WordId);
-        startActivity(intent);
+    public void getWordMeaning(String WordId) {
+        if (WordId.equals("Word Not in List Click to Search online")) {
+            Log.d("Harshit","not workin properly");
+            Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), SearchWord);
+            startActivity(intent);
+        } else {
+            Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), WordId);
+            startActivity(intent);
+        }
+
 
     }
-
-
 }
 
