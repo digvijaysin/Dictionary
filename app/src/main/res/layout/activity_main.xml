@@ -3,30 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backimg"
     tools:context="com.example.myapplication.imoxford.MainActivity">
-
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/easylogo"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        android:background="@drawable/backimg"
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical"
+
         >
-
-        <ImageView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/easylogo"
-            />
-
         <Button
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="English To English"
+            android:text="Search Your Word"
             android:id="@+id/search_word"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_shape"
             />
@@ -37,7 +36,7 @@
             android:text="Play Games"
             android:id="@+id/games"
             android:layout_marginTop="10dp"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:background="@drawable/button2_shape"
             />
         <Button
@@ -46,7 +45,7 @@
             android:text="Grammer Test"
             android:id="@+id/grammer"
             android:layout_marginTop="10dp"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:background="@drawable/button2_shape"
             />
 
@@ -56,7 +55,7 @@
             android:text="Share"
             android:id="@+id/share"
             android:layout_marginTop="10dp"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:background="@drawable/button_shape"
             />
 

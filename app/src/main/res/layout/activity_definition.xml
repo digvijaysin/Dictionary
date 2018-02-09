@@ -23,19 +23,12 @@
                 android:id="@+id/word_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 android:text="Dummy Word"
                 android:textColor="@color/colorPrimary"
                 />
-            <TextView
-                android:id="@+id/word_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:text="Category"/>
+
         </LinearLayout>
         <ImageView
             android:id="@+id/speak_word"

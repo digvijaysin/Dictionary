@@ -62,6 +62,7 @@ InputStream inputStream;
             buttonStopPlayingRecording;
     String AudioSavePathInDevice = null;
     AlertDialog alertDialog;
+    AlertDialog alertDialog1;
     MediaRecorder mediaRecorder;
     Random random;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
@@ -85,7 +86,7 @@ InputStream inputStream;
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialogBuilder.setView(R.layout.fore_ground_layout);
+                alertDialogBuilder.setMessage("Please Wait...");
                 alertDialog=alertDialogBuilder.create();
 alertDialog.show();
                 onSubmitButton(TestingText.getText().toString());
@@ -218,7 +219,7 @@ alertDialog.show();
             @Override
             public void onResponse(Call<GeTextAccuracy> call, Response<GeTextAccuracy> response) {
                 GeTextAccuracy geTextAccuracy=response.body();
-                alertDialog.cancel();
+                alertDialog.dismiss();
                 alertDialogBuilder.setMessage("Congratulation! Your Accuracy="+geTextAccuracy.getScore()+"%");
                 alertDialog=alertDialogBuilder.create();
                 alertDialog.show();

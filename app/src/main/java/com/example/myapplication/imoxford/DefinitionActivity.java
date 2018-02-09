@@ -2,6 +2,7 @@ package com.example.myapplication.imoxford;
 
 import android.content.Context;
 import android.content.Intent;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,27 +23,40 @@ import com.example.myapplication.imoxford.FriendClasses.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DefinitionActivity extends AppCompatActivity {
+public class DefinitionActivity extends AppCompatActivity implements Callback<GetWordMeaning> {
     AlertDialog alertDialog;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    TextToSpeech textToSpeech;
     static List<String> list2=new ArrayList<>();
     private static String wordName;
     SearchView searchView;
     TextView Word;
     RecycleAdapter recycleAdapter;
     TextView WordCategory;
+    static int context;
     static String wordCategory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_definition);
+        textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.UK);
+                    textToSpeech.setSpeechRate(1/2);
 
+                }
+            }
+        });
         AlertDialog.Builder alertDialogBuider=new AlertDialog.Builder(this);
         alertDialogBuider.setView(R.layout.fore_ground_layout);
         alertDialog=alertDialogBuider.create();
@@ -56,24 +70,22 @@ public class DefinitionActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                speakYourWord(wordName);
 
             }
         });
         searchView=(SearchView)findViewById(R.id.search_view1);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                Word.setText(query.toUpperCase());
-               // getWordMeaning(query);
-                alertDialog.show();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onClick(View v) {
+                finish();
             }
         });
+        if(context==1)
+        {
+            getWordMeaningFromServer(wordName);
+            alertDialog.show();
+        }
         recycleAdapter=new RecycleAdapter();
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.definition_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -81,12 +93,15 @@ public class DefinitionActivity extends AppCompatActivity {
 
     }
 
-    public static Intent getDefinitionActivityIntent(Context c,String WordKey)
+    public static Intent getDefinitionActivityIntent(Context c,String WordKey,int Count)
     {
+        context=Count;
         Intent intent=new Intent(c,DefinitionActivity.class);
         wordName=WordKey;
         list2.clear();
-        setWordDefinition();
+        if(Count==0) {
+            setWordDefinition();
+        }
         return intent;
     }
     public static  void setWordDefinition() {
@@ -155,45 +170,43 @@ public class DefinitionActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(),WordId.substring(13),Toast.LENGTH_LONG).show();
+            Toast.makeText(v.getContext(),WordId,Toast.LENGTH_LONG).show();
 
-           // onButtonPressed(WordId.substring(13));
+           speakYourWord(WordId);
         }
     }
-   /* public  void getWordMeaning(String WordId) {
+    public   void getWordMeaningFromServer(String WordId) {
         Call<GetWordMeaning> fetchWordListCall = RetrofitObject.getRetrofitObject().getWord("051aa347", "a4477df5e09ac56de5f14f8657c86bf2", WordId);
         fetchWordListCall.enqueue(this);
     }
     @Override
     public void onResponse(Call<GetWordMeaning> call, Response<GetWordMeaning> response) {
-        List<String> List=new ArrayList<>();
+        List<String> List = new ArrayList<>();
 
+        if (response.code() != 404) {
+            GetWordMeaning meaning = response.body();
 
-        GetWordMeaning meaning=response.body();
-
-        for( GetWordMeaning.LexicalEntries lexicalEntries:meaning.lexiclaEntries)
-        {
-
-            WordCategory.setText("( "+  lexicalEntries.getWordType()+" )");
-            for(GetWordMeaning.Entries entries:lexicalEntries.entries)
-            {
-                for(GetWordMeaning.Sense sense:entries.sense)
-                {
-                    for(GetWordMeaning.Definitions definitions:sense.definitions)
-                    {
-                        for(String s:definitions.definitions)
-                        {
-                            List.add(s);
+            for (GetWordMeaning.LexicalEntries lexicalEntries : meaning.lexiclaEntries) {
+                for (GetWordMeaning.Entries entries : lexicalEntries.entries) {
+                    for (GetWordMeaning.Sense sense : entries.sense) {
+                        for (GetWordMeaning.Definitions definitions : sense.definitions) {
+                            for (String s : definitions.definitions) {
+                                List.add(s);
+                            }
                         }
                     }
                 }
             }
-        }
-        list2.clear();
-        list2=List;
-        recycleAdapter.notifyDataSetChanged();
-        alertDialog.dismiss();
+            list2.clear();
+            list2 = List;
+            recycleAdapter.notifyDataSetChanged();
+            alertDialog.dismiss();
 
+        } else {
+            Toast.makeText(getApplicationContext(), "The Word that you want to search is not found. Please check your word ", Toast.LENGTH_SHORT).show();
+            alertDialog.dismiss();
+            finish();
+        }
     }
 
 
@@ -201,8 +214,26 @@ public class DefinitionActivity extends AppCompatActivity {
     @Override
     public void onFailure(Call<GetWordMeaning> call, Throwable t) {
 
-    }*/
+    }
+    public void speakYourWord(String Word)
+    {
+        if(textToSpeech.isSpeaking())
+        {
+            textToSpeech.stop();
+        }
+        textToSpeech.speak(Word, TextToSpeech.QUEUE_ADD, null);
+    }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        textToSpeech.shutdown();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        textToSpeech.shutdown();
+    }
 }

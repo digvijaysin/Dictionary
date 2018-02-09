@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class Constants {
     public static HashMap<String,String> hashMap;
     public static ArrayList<String> keyList;
+    public static ArrayList<String>sortList;
 
     public static String toTitleCase(String input) {
         StringBuilder titleCase = new StringBuilder();

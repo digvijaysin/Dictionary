@@ -49,56 +49,48 @@ public class SearchActivity extends AppCompatActivity {
         alertDialog = alertDialogBuider.create();
         alertDialogBuider.setCancelable(false);
         searchView = (SearchView) findViewById(R.id.search_view);
-        adapter = new RecycleAdapter(wordList);
+        adapter = new RecycleAdapter(Constants.sortList);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //getWordMeaning(query);
-                //alertDialog.show();
-                return true;
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-<<<<<<< HEAD
-                newText = Constants.toTitleCase(newText);
-                ArrayList<String> newList = new ArrayList<>();
-                for (String blogDetailsModalClass : Constants.keyList) {
-                    if (blogDetailsModalClass.contains(newText)) {
-                        Log.d("harshit", "word found");
-                        newList.add(blogDetailsModalClass);
 
-
-=======
                 newText=Constants.toTitleCase(newText);
                 ArrayList<String> newList=new ArrayList<>();
-                Log.d("Harshit","Before Binary Search");
-                int startIndex=Constants.binarySearch(newText);
-                Log.d("Harshit","After Binary Search");
-                if(startIndex!=-1){
-                    char alphabet=newText.charAt(0);
-                    alphabet+=1;
-                    int keyListSize=Constants.keyList.size();
-                    Log.d("Harshit","start index not 1");
-                    for(int i=startIndex; i<keyListSize && Constants.keyList.get(i).charAt(0)!=alphabet;i++) {
-                        newList.add(Constants.keyList.get(i));
->>>>>>> 84a9bab23319e5b7615d4c8635407a687bf71c70
-                    }
-                    adapter.SetFilter(newList);
+                if(newText.equals(""))
+                {
+newList.addAll(Constants.sortList);
                 }
-<<<<<<< HEAD
-                if (newList.isEmpty()) {
-                    newList.add("Word Not in List Click to Search online");
-                    SearchWord = newText;
+                else {
+                    Log.d("Harshit", "Before Binary Search");
+                    int startIndex = Constants.binarySearch(newText);
+                    Log.d("Harshit", "After Binary Search");
+                    if (startIndex != -1) {
+                        char alphabet = newText.charAt(0);
+                        alphabet += 1;
+                        int keyListSize = Constants.keyList.size();
+                        Log.d("Harshit", "start index not 1");
+                        for (int i = startIndex; i < keyListSize && Constants.keyList.get(i).charAt(0) != alphabet; i++) {
+                            newList.add(Constants.keyList.get(i));
+                        }
+                    }
+                    if (newList.isEmpty()) {
+                        newList.add("Word Not in List Click to Search online");
+                        SearchWord = newText;
+                    }
                 }
                 adapter.SetFilter(newList);
 
-=======
->>>>>>> 84a9bab23319e5b7615d4c8635407a687bf71c70
 
                 return false;
             }
@@ -168,11 +160,11 @@ public class SearchActivity extends AppCompatActivity {
 
     public void getWordMeaning(String WordId) {
         if (WordId.equals("Word Not in List Click to Search online")) {
-            Log.d("Harshit","not workin properly");
-            Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), SearchWord);
+
+            Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), SearchWord,1);
             startActivity(intent);
         } else {
-            Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), WordId);
+            Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), WordId,0);
             startActivity(intent);
         }
 
