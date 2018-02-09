@@ -75,7 +75,7 @@ public class DefinitionActivity extends AppCompatActivity implements Callback<Ge
             }
         });
         searchView=(SearchView)findViewById(R.id.search_view1);
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
