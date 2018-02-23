@@ -30,22 +30,7 @@ public class InitiateAllWords {
        // initiateKeys();
         initiateWordDefinitions();
     }
-    /*public void initiateKeys(){
-        AssetManager am = context.getAssets();
-        try {
-            InputStream is = am.open("words.txt");
-            Scanner sc = new Scanner(is);
-            int t = sc.nextInt();
-            sc.nextLine();
 
-            while (t-- != 0) {
-                keyList.add(sc.nextLine());
-            }
-            Constants.keyList=keyList;
-        }catch(Exception e){
-            Log.d("Harshit",e.toString());
-        }
-    }*/
     public void initiateWordDefinitions(){
         AssetManager am = context.getAssets();
                 try {
