@@ -49,7 +49,7 @@ public class SearchActivity extends AppCompatActivity {
         alertDialog = alertDialogBuider.create();
         alertDialogBuider.setCancelable(false);
         searchView = (SearchView) findViewById(R.id.search_view);
-        adapter = new RecycleAdapter(Constants.sortList);
+        adapter = new RecycleAdapter(Constants.keyList);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -69,18 +69,22 @@ public class SearchActivity extends AppCompatActivity {
                 ArrayList<String> newList=new ArrayList<>();
                 if(newText.equals(""))
                 {
-newList.addAll(Constants.sortList);
+                    newList.addAll(Constants.sortList);
                 }
                 else {
                     Log.d("Harshit", "Before Binary Search");
                     int startIndex = Constants.binarySearch(newText);
                     Log.d("Harshit", "After Binary Search");
+                    int endIndex=newText.length()-1;
+                    if(endIndex>=2){
+                        endIndex--;
+                    }
                     if (startIndex != -1) {
-                        char alphabet = newText.charAt(0);
+                        char alphabet = newText.charAt(endIndex);
                         alphabet += 1;
                         int keyListSize = Constants.keyList.size();
                         Log.d("Harshit", "start index not 1");
-                        for (int i = startIndex; i < keyListSize && Constants.keyList.get(i).charAt(0) != alphabet; i++) {
+                        for (int i = startIndex; i < keyListSize && Constants.keyList.get(i).charAt(endIndex) != alphabet; i++) {
                             newList.add(Constants.keyList.get(i));
                         }
                     }

@@ -52,7 +52,6 @@ public class InitiateAllWords {
                     InputStream is = am.open("wordMeanings1.txt");
                     BufferedReader br=new BufferedReader(new InputStreamReader(is));
                     ArrayList<String> keyList=new ArrayList<String>();
-                    ArrayList<String> sortList=new ArrayList<String>();
                     HashMap<String,String> hashMap=new HashMap<String,String>();
                     int t=Integer.parseInt(br.readLine());
                     int count=t;
@@ -64,15 +63,11 @@ public class InitiateAllWords {
                             word += s.charAt(i);
                         }
                         keyList.add(word);
-                        if(t>count-10)
-                        {
-                            sortList.add(word);
-                        }
                         hashMap.put(word, s.substring(i + 1,len-1));
                 }
                     Constants.hashMap=hashMap;
                     Constants.keyList=keyList;
-                    Constants.sortList=sortList;
+                    Constants.sortList= keyList.subList(0,10);
             } catch (IOException e) {
                 Log.d("Harshit",e.toString());
             }

@@ -2,6 +2,7 @@ package com.example.myapplication.imoxford.FriendClasses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Harshit on 27-01-2018.
@@ -10,7 +11,7 @@ import java.util.HashMap;
 public class Constants {
     public static HashMap<String,String> hashMap;
     public static ArrayList<String> keyList;
-    public static ArrayList<String>sortList;
+    public static List<String> sortList;
 
     public static String toTitleCase(String input) {
         StringBuilder titleCase = new StringBuilder();
@@ -26,7 +27,6 @@ public class Constants {
 
             titleCase.append(c);
         }
-
         return titleCase.toString();
     }
     public static int binarySearch(String x) {
