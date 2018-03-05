@@ -14,20 +14,20 @@ public class Constants {
     public static List<String> sortList;
 
     public static String toTitleCase(String input) {
-        StringBuilder titleCase = new StringBuilder();
-        boolean nextTitleCase = true;
+            StringBuilder titleCase = new StringBuilder();
+            boolean nextTitleCase = true;
 
-        for (char c : input.toCharArray()) {
-            if (Character.isSpaceChar(c)) {
-                nextTitleCase = true;
-            } else if (nextTitleCase) {
-                c = Character.toTitleCase(c);
-                nextTitleCase = false;
+            for (char c : input.toCharArray()) {
+                if (Character.isSpaceChar(c)) {
+                    nextTitleCase = true;
+                } else if (nextTitleCase) {
+                    c = Character.toTitleCase(c);
+                    nextTitleCase = false;
+                }
+
+                titleCase.append(c);
             }
-
-            titleCase.append(c);
-        }
-        return titleCase.toString();
+            return titleCase.toString();
     }
     public static int binarySearch(String x) {
         if(x=="")

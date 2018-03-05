@@ -106,7 +106,6 @@ public class SearchActivity extends AppCompatActivity {
         public RecycleAdapter(ArrayList<String> list) {
             list2 = list;
         }
-
         Animation animation;
 
         @Override

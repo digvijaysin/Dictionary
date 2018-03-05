@@ -59,7 +59,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Grammer Test"
+        android:text="Spoken English Trainer"
         android:id="@+id/grammer"
         android:layout_marginTop="10dp"
         android:textSize="20dp"

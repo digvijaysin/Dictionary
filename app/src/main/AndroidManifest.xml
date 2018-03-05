@@ -37,7 +37,8 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".Antonyms" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".DefinitionActivity"></activity>
+        <activity android:name=".DefinitionActivity" />
+        <activity android:name=".SpokenEnglishTrainer"></activity>
     </application>
 
 </manifest>
