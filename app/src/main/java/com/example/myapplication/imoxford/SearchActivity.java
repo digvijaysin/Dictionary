@@ -76,16 +76,21 @@ public class SearchActivity extends AppCompatActivity {
                     int startIndex = Constants.binarySearch(newText);
                     Log.d("Harshit", "After Binary Search");
                     int endIndex=newText.length()-1;
-                    if(endIndex>=2){
-                        endIndex--;
-                    }
                     if (startIndex != -1) {
                         char alphabet = newText.charAt(endIndex);
                         alphabet += 1;
                         int keyListSize = Constants.keyList.size();
-                        Log.d("Harshit", "start index not 1");
-                        for (int i = startIndex; i < keyListSize && Constants.keyList.get(i).charAt(endIndex) != alphabet; i++) {
-                            newList.add(Constants.keyList.get(i));
+                        Log.d("Harshit", "start index not -1");
+                        for (int i = startIndex; i < keyListSize; i++) {
+                            try{
+                                char c = Constants.keyList.get(i).charAt(endIndex);
+                                if(c <= alphabet)
+                                    newList.add(Constants.keyList.get(i));
+                                else
+                                    break;
+                            }catch (Exception e){
+
+                            }
                         }
                     }
                     if (newList.isEmpty()) {
