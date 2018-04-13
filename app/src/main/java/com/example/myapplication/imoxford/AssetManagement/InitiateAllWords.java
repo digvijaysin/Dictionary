@@ -53,6 +53,7 @@ public class InitiateAllWords {
                     Constants.hashMap=hashMap;
                     Constants.keyList=keyList;
                     Constants.sortList= keyList.subList(0,10);
+                    br.close();
             } catch (IOException e) {
                 Log.d("Harshit",e.toString());
             }

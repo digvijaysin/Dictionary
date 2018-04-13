@@ -8,28 +8,69 @@
     android:padding="10dp"
     android:background="@color/bg_gradient_start"
     tools:context="com.example.myapplication.imoxford.VoiceRecogniser">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="11dp"
+            android:text="Accuracy Meter"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginBottom="10dp"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:background="@drawable/images"
+            android:id="@+id/accuracy_meter"
+            android:text="100"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+    </RelativeLayout>
     <TextView
-        android:id="@+id/txtSpeechInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Let's Check How much You are Strong!"
+        android:text="Please pronounce the below given text in english"
         android:textColor="@color/colorPrimary"
         android:layout_marginBottom="10dp"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/txtSpeechInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="मैंने अपनी मां के लिए कुछ फूल खरीदे"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/testing_code"
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
-        android:maxLines="10"
+        android:layout_height="93dp"
         android:layout_marginBottom="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/bg_gradient_start"
         android:background="@drawable/edittext_shape"
-        android:hint="Enter Text Here"/>
+        android:hint="Text you speak will be displayed here"
+        android:maxLines="10"
+        android:textColor="@color/bg_gradient_start"
+        android:textSize="20sp" />
 <LinearLayout
     android:layout_marginTop="20dp"
     android:layout_width="match_parent"
@@ -55,12 +96,13 @@
         android:textColor="@color/bg_gradient_start"
         android:text="Reset"/>
 </LinearLayout>
+
     <ImageView
-        android:layout_marginTop="20dp"
         android:id="@+id/btnSpeak"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ic_keyboard_voice_black_24dp" />
     <TextView
         android:layout_width="wrap_content"

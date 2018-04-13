@@ -175,8 +175,6 @@ public class SearchActivity extends AppCompatActivity {
             Intent intent = DefinitionActivity.getDefinitionActivityIntent(getApplicationContext(), WordId,0);
             startActivity(intent);
         }
-
-
     }
 }
 

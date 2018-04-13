@@ -3,6 +3,7 @@ package com.example.myapplication.imoxford;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Path;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.imoxford.FriendClasses.Constants;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.JsonObject;
 
@@ -36,6 +38,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.*;
 import java.io.File.*;
 import java.security.cert.CertPathBuilderSpi;
@@ -53,10 +56,13 @@ import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class VoiceRecogniser extends AppCompatActivity {
+    public ArrayList<String> hindiList;
+    public ArrayList<String> englishList;
     public static TextView txtSpeechInput;
     private ImageView btnSpeak;
     private final int REQ_CODE_SPEECH_INPUT = 100;
-InputStream inputStream;
+    public int count=0;
+    InputStream inputStream;
     EditText TestingText;
     Button submitButton, ResetButton, buttonPlayLastRecordAudio,
             buttonStopPlayingRecording;
@@ -69,6 +75,7 @@ InputStream inputStream;
     public static final int RequestPermissionCode = 1;
     MediaPlayer mediaPlayer;
     AlertDialog.Builder alertDialogBuilder;
+    private TextView accuracyMeter;
 
 
     @Override
@@ -76,19 +83,19 @@ InputStream inputStream;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice_recogniser);
         txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
+        accuracyMeter = (TextView) findViewById(R.id.accuracy_meter);
         buttonPlayLastRecordAudio = (Button) findViewById(R.id.button3);
         buttonStopPlayingRecording = (Button) findViewById(R.id.button4);
         submitButton=(Button)findViewById(R.id.submit);
         ResetButton=(Button)findViewById(R.id.reset);
          alertDialogBuilder = new AlertDialog.Builder(this);
+         getDataFromAssets();
+         generateWordToDisplay();
 
         TestingText=(EditText)findViewById(R.id.testing_code);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialogBuilder.setMessage("Please Wait...");
-                alertDialog=alertDialogBuilder.create();
-alertDialog.show();
                 onSubmitButton(TestingText.getText().toString());
             }
         });
@@ -198,6 +205,62 @@ alertDialog.show();
 
 
     }
+
+    private void generateWordToDisplay() {
+        Random random=new Random();
+        int i = random.nextInt()%12;
+        count=i;
+        txtSpeechInput.setText(hindiList.get(i));
+
+    }
+
+    private void checkAnswer(String test) {
+        String answer=englishList.get(count).toLowerCase();
+        test=test.toLowerCase();
+        String[] answerWords = answer.split(" ");
+        Log.d("Harshit",answerWords.toString());
+        String[] testWords = test.split(" ");
+        Log.d("Harshit",testWords.toString());
+        int min=answerWords.length>testWords.length?testWords.length:answerWords.length;
+        int max=answerWords.length>testWords.length?answerWords.length:testWords.length;
+        int diff=max-min;
+        int result=0;
+        for(int i=0;i<min;i++){
+            Log.d("Harshit",testWords[i]+"    "+ answerWords[i]);
+            if(answerWords[i].equals(testWords[i])){
+                result++;
+            }
+        }
+        result=(100*result)/answerWords.length;
+        accuracyMeter.setText(""+result+"");
+
+
+    }
+
+    private int getDataFromAssets() {
+        AssetManager am = this.getAssets();
+        try {
+            InputStream isHindi = am.open("spokenEnglishTrainerHindi.txt");
+            InputStream isEnglish = am.open("spokenEnglishTrainer.txt");
+            BufferedReader brHindi = new BufferedReader(new InputStreamReader(isHindi));
+            BufferedReader brEnglish = new BufferedReader(new InputStreamReader(isEnglish));
+            hindiList = new ArrayList<String>();
+            englishList = new ArrayList<String>();
+            HashMap<String, String> hashMap = new HashMap<String, String>();
+            int t=Integer.parseInt(brHindi.readLine());
+            count=t-1;
+            while(t--!=0) {
+                hindiList.add(brHindi.readLine());
+                englishList.add(brEnglish.readLine());
+            }
+            brHindi.close();
+            brEnglish.close();
+       } catch (IOException e) {
+            Log.d("Harshit",e.toString());
+        }
+        return count;
+        }
+
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -213,6 +276,11 @@ alertDialog.show();
     }
 
     public void onSubmitButton(String TextForText)
+    {
+        if(true) {
+        checkAnswer(TextForText);
+    }
+    else
     {
         Call<GeTextAccuracy> getText= VoiceRecogniserClass.getRetrofitObject(1).getTextAccuracy(TextForText,"DEMO_KEY");
         getText.enqueue(new Callback<GeTextAccuracy>() {
@@ -230,7 +298,7 @@ alertDialog.show();
 
             }
         });
-
+}
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -278,8 +346,7 @@ alertDialog.show();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case RequestPermissionCode:
                 if (grantResults.length > 0) {
