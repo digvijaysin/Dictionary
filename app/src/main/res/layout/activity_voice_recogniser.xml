@@ -71,6 +71,17 @@
         android:maxLines="10"
         android:textColor="@color/bg_gradient_start"
         android:textSize="20sp" />
+    <TextView
+        android:id="@+id/txtSpeechAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold" />
 <LinearLayout
     android:layout_marginTop="20dp"
     android:layout_width="match_parent"
@@ -94,7 +105,7 @@
         android:background="@drawable/button2_shape"
         android:textStyle="bold"
         android:textColor="@color/bg_gradient_start"
-        android:text="Reset"/>
+        android:text="Next"/>
 </LinearLayout>
 
     <ImageView

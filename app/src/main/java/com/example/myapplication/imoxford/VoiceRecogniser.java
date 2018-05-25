@@ -76,6 +76,7 @@ public class VoiceRecogniser extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     AlertDialog.Builder alertDialogBuilder;
     private TextView accuracyMeter;
+    private TextView txtSpeechAnswer;
 
 
     @Override
@@ -88,6 +89,8 @@ public class VoiceRecogniser extends AppCompatActivity {
         buttonStopPlayingRecording = (Button) findViewById(R.id.button4);
         submitButton=(Button)findViewById(R.id.submit);
         ResetButton=(Button)findViewById(R.id.reset);
+        txtSpeechAnswer= (TextView) findViewById(R.id.txtSpeechAnswer);
+
          alertDialogBuilder = new AlertDialog.Builder(this);
          getDataFromAssets();
          generateWordToDisplay();
@@ -103,6 +106,8 @@ public class VoiceRecogniser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TestingText.setText("");
+                getDataFromAssets();
+                generateWordToDisplay();
             }
         });
         btnSpeak = (ImageView) findViewById(R.id.btnSpeak);
@@ -208,8 +213,9 @@ public class VoiceRecogniser extends AppCompatActivity {
 
     private void generateWordToDisplay() {
         Random random=new Random();
-        int i = random.nextInt()%12;
+        int i = Math.abs(random.nextInt()%12);
         count=i;
+        Log.d("Harshit",i+" +value of i");
         txtSpeechInput.setText(hindiList.get(i));
 
     }
@@ -233,8 +239,8 @@ public class VoiceRecogniser extends AppCompatActivity {
         }
         result=(100*result)/answerWords.length;
         accuracyMeter.setText(""+result+"");
-
-
+        txtSpeechAnswer.setText(answer);
+        Toast.makeText(this,"Accuracy updated",Toast.LENGTH_SHORT).show();
     }
 
     private int getDataFromAssets() {
@@ -376,4 +382,3 @@ public class VoiceRecogniser extends AppCompatActivity {
     }
 
 }
-

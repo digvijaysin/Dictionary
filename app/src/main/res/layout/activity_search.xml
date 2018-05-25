@@ -10,6 +10,10 @@
 
 
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/search_view_fm">
     <android.support.v7.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="fill_parent"
@@ -19,7 +23,7 @@
         android:textStyle="bold"
         android:background="@color/colorPrimary"
         android:textSize="20dp"/>
-
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

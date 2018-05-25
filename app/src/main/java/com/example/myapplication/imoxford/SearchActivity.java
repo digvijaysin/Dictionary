@@ -35,7 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    SearchView searchView;
+    private SearchView searchView;
     RecycleAdapter adapter;
     public String SearchWord;
     public String WordName;
@@ -55,7 +55,6 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
 
             @Override
             public boolean onQueryTextSubmit(String query) {
